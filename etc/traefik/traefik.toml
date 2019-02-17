@@ -1,0 +1,46 @@
+##
+# logLevel = "ERROR"
+logLevel = "DEBUG"
+defaultEntryPoints = ["https","http"]
+
+[entryPoints]
+  [entryPoints.ui]
+    address=":8080"
+  [entryPoints.ui.auth]
+    [entryPoints.ui.auth.basic]
+      users = [
+        "admin:$apr1$1pj0sndM$duBQ2vbhy8N9IN23ODAaX0",
+       ]
+  [entryPoints.status]
+    address = ":8081"
+  [entryPoints.http]
+    address = ":80"
+    [entryPoints.http.redirect]
+      entryPoint = "https"
+  [entryPoints.https]
+    address = ":443"
+    [entryPoints.https.tls]
+
+[retry]
+
+[ping]
+  entryPoint = "status"
+
+[api]
+  entryPoint = "ui"
+  dashboard = true
+  debug = false
+
+[docker]
+  endpoint = "unix:///var/run/docker.sock"
+  domain = "my-awesome-app.org"
+  watch = true
+  exposedByDefault = false
+
+[acme]
+  email = "your-email-here@my-awesome-app.org"
+  storage = "acme.json"
+  entryPoint = "https"
+  onHostRule = true
+  [acme.httpChallenge]
+    entryPoint = "http"

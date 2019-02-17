@@ -1,0 +1,25 @@
+version: '3.6'
+
+# https://docs.traefik.io/basics/
+# By default, Traefik will try to find a traefik.toml in the following places:
+# /etc/traefik/
+# $HOME/.traefik/
+# . the working directory
+
+services:
+  traefik:
+    image: traefik:1.7.2-alpine
+    restart: always
+    ports:
+      - 80:80
+      - 8080:8080
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./etc/traefik:/etc/traefik
+    container_name: traefik
+
+networks:
+  default:
+    external: true
+    name: web
